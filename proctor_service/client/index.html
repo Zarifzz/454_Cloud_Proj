@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lambda Test</title>
+</head>
+<body>
+  <h1>Test AWS Connection</h1>
+  <button id="testBtn">Call Lambda</button>
+  <p id="output"></p>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.getElementById("testBtn").addEventListener("click", async () => {
+      const message = await ipcRenderer.invoke("callLambda");
+      document.getElementById("output").innerText = message;
+    });
+  </script>
+</body>
+</html>

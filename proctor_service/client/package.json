@@ -1,0 +1,17 @@
+{
+
+
+  "name": "electron-aws-test",
+  "version": "1.0.0",
+  "description": "Test Electron app that calls AWS Lambda through API Gateway",
+  "main": "main.js",            
+  "scripts": {
+    "start": "electron ."         
+  },
+
+
+  "dependencies": {
+    "axios": "^1.12.2",
+    "electron": "^38.3.0"
+  }
+}
