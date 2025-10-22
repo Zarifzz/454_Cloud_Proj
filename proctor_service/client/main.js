@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const axios = require("axios");
 
-const API_URL = "https://abc123.execute-api.us-west-1.amazonaws.com/dev/hello"; // replace with yours
+const API_URL = ""; // replace with yours
 
 function createWindow() {
   const win = new BrowserWindow({
