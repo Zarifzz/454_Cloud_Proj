@@ -16,3 +16,7 @@ proctor_service/backend/node_modules/
 dist/
 build/
 
+
+# Config
+proctor_service/client/client_config.json
+
