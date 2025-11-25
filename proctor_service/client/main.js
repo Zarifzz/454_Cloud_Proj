@@ -71,5 +71,37 @@ ipcMain.handle("createUser", async (event, userData) => {
 });
 
 
+/* -------------------------------
+   CALL UPLOADTEST LAMBDA
+---------------------------------*/
+
+const API_URL_UploadTest = config.API_URLS.UploadTest;
+
+ipcMain.handle("uploadTest", async (event, data) => {
+  try {
+    const jwtToken = config.CURR_TOKEN;
+
+    const response = await axios.post(
+      API_URL_UploadTest,
+      {
+        testId: data.testId,
+        testJson: data.testJson,
+        answersJson: data.answersJson
+      },
+      {
+        headers: { Authorization: jwtToken }
+      }
+    );
+
+    return response.data;
+
+  } catch (error) {
+    console.error(error.response ? error.response.data : error);
+    return { error: "UploadTest failed" };
+  }
+});
+
+
+
 
 app.whenReady().then(createWindow);

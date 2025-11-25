@@ -29,6 +29,25 @@
 
   <p id="createUserOutput"></p>
 
+  <hr>
+
+  <!-- Upload Test Section -->
+  <h2>Upload Test</h2>
+
+  <label>Test ID:</label><br>
+  <input id="testIdInput" type="text" placeholder="Enter test ID"><br><br>
+
+  <label>Select test.json:</label><br>
+  <input id="testJsonFile" type="file" accept="application/json"><br><br>
+
+  <label>Select answers.json:</label><br>
+  <input id="answersJsonFile" type="file" accept="application/json"><br><br>
+
+  <button id="uploadTestBtn">Upload Test</button>
+
+  <p id="uploadTestOutput"></p>
+
+
   <script>
     const { ipcRenderer } = require("electron");
 
@@ -54,6 +73,34 @@
 
       document.getElementById("createUserOutput").innerText =
         JSON.stringify(response, null, 2);
+    });
+
+    /* ---------------------------
+     UPLOAD TEST
+    --------------------------- */
+    document.getElementById("uploadTestBtn").addEventListener("click", async () => {
+      const testId = document.getElementById("testIdInput").value;
+      const testFile = document.getElementById("testJsonFile").files[0];
+      const answersFile = document.getElementById("answersJsonFile").files[0];
+
+      if (!testId || !testFile || !answersFile) {
+        document.getElementById("uploadTestOutput").innerText =
+          "Missing Test ID or files.";
+        return;
+      }
+
+      // Read JSON file contents
+      const testJson = JSON.parse(await testFile.text());
+      const answersJson = JSON.parse(await answersFile.text());
+
+      const result = await ipcRenderer.invoke("uploadTest", {
+        testId,
+        testJson,
+        answersJson
+      });
+
+      document.getElementById("uploadTestOutput").innerText =
+        JSON.stringify(result, null, 2);
     });
   </script>
 
