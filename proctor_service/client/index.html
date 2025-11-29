@@ -1,108 +1,223 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lambda Test</title>
+  <title>Proctor App - Test UI</title>
 </head>
 <body>
+  <h1>Proctor App — Quick Test UI</h1>
 
-  <h1>Test AWS Connection</h1>
-
-  <!-- Call Lambda Button -->
-  <button id="testBtn">Call Lambda</button>
-  <p id="output"></p>
-
-  <hr>
-
-  <!-- Create User Section -->
-  <h2>Create Cognito User</h2>
-
-  <label>Email:</label><br>
-  <input id="emailInput" type="text" placeholder="Enter email"><br><br>
-
-  <label>Role:</label><br>
-  <select id="roleSelect">
-    <option value="Teachers">Teachers</option>
-    <option value="Students">Students</option>
-  </select><br><br>
-
-  <button id="createUserBtn">Create User</button>
-
-  <p id="createUserOutput"></p>
+  <!-- Generic test lambda -->
+  <section>
+    <h2>Ping Test Lambda</h2>
+    <button id="testBtn">Call Test Lambda</button>
+    <pre id="output"></pre>
+  </section>
 
   <hr>
 
-  <!-- Upload Test Section -->
-  <h2>Upload Test</h2>
+  <!-- Create Cognito User -->
+  <section>
+    <h2>Create Cognito User (Admin)</h2>
+    <input id="emailInput" placeholder="email" type="text" />
+    <select id="roleSelect">
+      <option value="Teachers">Teachers</option>
+      <option value="Students">Students</option>
+    </select>
+    <button id="createUserBtn">Create User</button>
+    <pre id="createUserOutput"></pre>
+  </section>
 
-  <label>Test ID:</label><br>
-  <input id="testIdInput" type="text" placeholder="Enter test ID"><br><br>
+  <hr>
 
-  <label>Select test.json:</label><br>
-  <input id="testJsonFile" type="file" accept="application/json"><br><br>
+  <!-- Upload Test -->
+  <section>
+    <h2>Professor — Upload Test</h2>
+    <input id="testIdInput" placeholder="testId (eg. mock)" type="text" />
+    <div>
+      <label>test.json</label>
+      <input id="testJsonFile" type="file" accept="application/json" />
+    </div>
+    <div>
+      <label>answers.json</label>
+      <input id="answersJsonFile" type="file" accept="application/json" />
+    </div>
+    <button id="uploadTestBtn">Upload Test</button>
+    <pre id="uploadTestOutput"></pre>
+  </section>
 
-  <label>Select answers.json:</label><br>
-  <input id="answersJsonFile" type="file" accept="application/json"><br><br>
+  <hr>
 
-  <button id="uploadTestBtn">Upload Test</button>
+  <!-- Publish Test -->
+  <section>
+    <h2>Professor — Publish Test</h2>
+    <input id="pubTestId" placeholder="testId" type="text" />
+    <textarea id="metadataInput" rows="6" cols="60">
+{"published": true, "durationMinutes": 30, "availableFrom": "2025-12-01T10:00:00Z", "availableTo":"2025-12-01T11:00:00Z"}
+    </textarea><br>
+    <button id="publishTestBtn">Publish Test</button>
+    <pre id="publishTestOutput"></pre>
+  </section>
 
-  <p id="uploadTestOutput"></p>
+  <hr>
 
+  <!-- List Tests (Professor) -->
+  <section>
+    <h2>Professor — List Tests</h2>
+    <button id="listTestsBtn">List Tests</button>
+    <pre id="listTestsOutput"></pre>
+  </section>
 
-  <script>
-    const { ipcRenderer } = require("electron");
+  <hr>
 
-    /* ---------------------------
-       CALL TEST LAMBDA
-    --------------------------- */
-    document.getElementById("testBtn").addEventListener("click", async () => {
-      const message = await ipcRenderer.invoke("callLambda");
-      document.getElementById("output").innerText = message;
-    });
+  <!-- Get Submissions For Test (Professor) -->
+  <section>
+    <h2>Professor — Get Submissions For Test</h2>
+    <input id="getSubTestId" placeholder="testId" type="text" />
+    <button id="getSubsBtn">Get Submissions</button>
+    <pre id="getSubsOutput"></pre>
+  </section>
 
-    /* ---------------------------
-       CALL CREATE USER LAMBDA
-    --------------------------- */
-    document.getElementById("createUserBtn").addEventListener("click", async () => {
-      const email = document.getElementById("emailInput").value;
-      const role = document.getElementById("roleSelect").value;
+  <hr>
 
-      const response = await ipcRenderer.invoke("createUser", {
-        email,
-        role
-      });
+  <!-- Student — List Available Tests -->
+  <section>
+    <h2>Student — List Available Tests</h2>
+    <button id="listAvailableBtn">List Available Tests</button>
+    <pre id="listAvailableOutput"></pre>
+  </section>
 
-      document.getElementById("createUserOutput").innerText =
-        JSON.stringify(response, null, 2);
-    });
+  <hr>
 
-    /* ---------------------------
-     UPLOAD TEST
-    --------------------------- */
-    document.getElementById("uploadTestBtn").addEventListener("click", async () => {
-      const testId = document.getElementById("testIdInput").value;
-      const testFile = document.getElementById("testJsonFile").files[0];
-      const answersFile = document.getElementById("answersJsonFile").files[0];
+  <!-- Student — Take Test -->
+  <section>
+    <h2>Student — Take Test</h2>
+    <input id="takeTestId" placeholder="testId" type="text" />
+    <button id="takeTestBtn">Take Test</button>
+    <pre id="takeTestOutput"></pre>
+  </section>
 
-      if (!testId || !testFile || !answersFile) {
-        document.getElementById("uploadTestOutput").innerText =
-          "Missing Test ID or files.";
-        return;
-      }
+  <hr>
 
-      // Read JSON file contents
-      const testJson = JSON.parse(await testFile.text());
-      const answersJson = JSON.parse(await answersFile.text());
+  <!-- Student — Submit Test -->
+  <section>
+    <h2>Student — Submit Test</h2>
+    <input id="submitTestId" placeholder="testId" type="text" />
+    <label>answers JSON (paste):</label><br>
+    <textarea id="submitAnswers" rows="6" cols="60">{"q1":"4","q2":"7"}</textarea><br>
+    <button id="submitTestBtn">Submit Test</button>
+    <pre id="submitTestOutput"></pre>
+  </section>
 
-      const result = await ipcRenderer.invoke("uploadTest", {
-        testId,
-        testJson,
-        answersJson
-      });
+  <hr>
 
-      document.getElementById("uploadTestOutput").innerText =
-        JSON.stringify(result, null, 2);
-    });
-  </script>
+  <!-- Student — Get Submission Status (self) -->
+  <section>
+    <h2>Student — Get Submission Status (self)</h2>
+    <input id="statusTestId" placeholder="testId" type="text" />
+    <button id="statusBtn">Get My Submission Status</button>
+    <pre id="statusOutput"></pre>
+  </section>
 
+<script>
+  const { ipcRenderer } = require("electron");
+
+  // ping
+  document.getElementById("testBtn").addEventListener("click", async () => {
+    const r = await ipcRenderer.invoke("callLambda");
+    document.getElementById("output").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // create user
+  document.getElementById("createUserBtn").addEventListener("click", async () => {
+    const email = document.getElementById("emailInput").value;
+    const role = document.getElementById("roleSelect").value;
+    const r = await ipcRenderer.invoke("createUser", { email, role });
+    document.getElementById("createUserOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // upload test
+  document.getElementById("uploadTestBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("testIdInput").value;
+    const testFile = document.getElementById("testJsonFile").files[0];
+    const answersFile = document.getElementById("answersJsonFile").files[0];
+
+    if (!testId || !testFile || !answersFile) {
+      document.getElementById("uploadTestOutput").innerText = "Missing testId or files";
+      return;
+    }
+
+    const testJson = JSON.parse(await testFile.text());
+    const answersJson = JSON.parse(await answersFile.text());
+
+    const r = await ipcRenderer.invoke("uploadTest", { testId, testJson, answersJson });
+    document.getElementById("uploadTestOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // publish test
+  document.getElementById("publishTestBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("pubTestId").value;
+    let metadata;
+    try {
+      metadata = JSON.parse(document.getElementById("metadataInput").value);
+    } catch (e) {
+      document.getElementById("publishTestOutput").innerText = "Invalid metadata JSON";
+      return;
+    }
+    const r = await ipcRenderer.invoke("publishTest", { testId, metadata });
+    document.getElementById("publishTestOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // list tests
+  document.getElementById("listTestsBtn").addEventListener("click", async () => {
+    const r = await ipcRenderer.invoke("listTests");
+    document.getElementById("listTestsOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // get submissions for test (professor)
+  document.getElementById("getSubsBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("getSubTestId").value;
+    if (!testId) { document.getElementById("getSubsOutput").innerText = "Missing testId"; return; }
+    const r = await ipcRenderer.invoke("getSubmissionsForTest", testId);
+    document.getElementById("getSubsOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // list available tests (student)
+  document.getElementById("listAvailableBtn").addEventListener("click", async () => {
+    const r = await ipcRenderer.invoke("listAvailableTests");
+    document.getElementById("listAvailableOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // take test (student)
+  document.getElementById("takeTestBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("takeTestId").value;
+    if (!testId) { document.getElementById("takeTestOutput").innerText = "Missing testId"; return; }
+    const r = await ipcRenderer.invoke("takeTest", testId);
+    document.getElementById("takeTestOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // submit test (student)
+  document.getElementById("submitTestBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("submitTestId").value;
+    let answers;
+    try {
+      answers = JSON.parse(document.getElementById("submitAnswers").value);
+    } catch (e) {
+      document.getElementById("submitTestOutput").innerText = "Invalid answers JSON";
+      return;
+    }
+    const r = await ipcRenderer.invoke("submitTest", { testId, answers });
+    document.getElementById("submitTestOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+  // get submission status (student)
+  document.getElementById("statusBtn").addEventListener("click", async () => {
+    const testId = document.getElementById("statusTestId").value;
+    if (!testId) { document.getElementById("statusOutput").innerText = "Missing testId"; return; }
+    const r = await ipcRenderer.invoke("getSubmissionStatus", testId);
+    document.getElementById("statusOutput").innerText = JSON.stringify(r, null, 2);
+  });
+
+</script>
 </body>
 </html>
