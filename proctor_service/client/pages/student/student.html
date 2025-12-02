@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+</head>
+<body>
+
+  <h1>Student Dashboard</h1>
+  <button id="backBtn">Back</button>
+
+  <hr>
+
+  <!-- List Available Tests -->
+  <section>
+    <h2>Available Tests</h2>
+    <button id="listAvailableBtn">Load Available Tests</button>
+    <pre id="availableTestsOutput"></pre>
+  </section>
+
+  <hr>
+
+<!-- Take Test -->
+  <section>
+    <h2>Take Test</h2>
+
+    <label>Test ID:</label>
+    <input id="takeTestId" type="text" placeholder="Enter test ID">
+
+    <button id="takeTestBtn">Load Test</button>
+
+    <!-- New button -->
+    <button id="openTestPageBtn">Open Test Page</button>
+
+    <pre id="takeTestOutput"></pre>
+  </section>
+
+
+  <hr>
+
+  <!-- Submission Status -->
+  <section>
+    <h2>Your Submission Status</h2>
+
+    <label>Test ID:</label>
+    <input id="statusTestId" type="text" placeholder="Enter test ID">
+
+    <button id="statusBtn">Check Status</button>
+    <pre id="statusOutput"></pre>
+  </section>
+
+  <script src="student.js"></script>
+</body>
+</html>
