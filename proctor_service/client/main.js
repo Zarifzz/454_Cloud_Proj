@@ -33,7 +33,19 @@ ipcMain.on("navigate-index", () => {
   win.loadFile("pages/index.html");
 });
 
+ipcMain.on("navigate-teacher", () => {
+  win.loadFile("pages/teacher/teacher.html");
+});
+
+
 /* ------------------------------------------
    CONNECT FRONTEND → backend.js
 ------------------------------------------- */
 ipcMain.handle("createUser", backend.createUser);
+
+// Teachers
+ipcMain.handle("uploadTest", backend.uploadTest);
+ipcMain.handle("publishTest", backend.publishTest);
+ipcMain.handle("listTests", backend.listTests);
+ipcMain.handle("getSubmissionsForTest", backend.getSubmissionsForTest);
+
