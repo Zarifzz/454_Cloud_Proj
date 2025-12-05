@@ -1,7 +1,9 @@
 # Node.js dependencies
-proctor_service/client/node_modules/
-proctor_service/backend/node_modules/
-proctor_service/client/my-app/
+# proctor_service/client/my-app/node_modules/
+# proctor_service/backend/node_modules/
+# proctor_service/client/my-app/
+# proctor_service/client/node_modules
+node_modules/
 
 # Logs
 *.log
