@@ -1,6 +1,7 @@
 # Node.js dependencies
 proctor_service/client/node_modules/
 proctor_service/backend/node_modules/
+proctor_service/client/my-app/
 
 # Logs
 *.log
@@ -19,4 +20,3 @@ build/
 
 # Config
 proctor_service/client/client_config.json
-

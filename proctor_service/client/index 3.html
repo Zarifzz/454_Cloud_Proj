@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lambda Test</title>
+</head>
+<body>
+
+  <h1>Test AWS Connection</h1>
+
+  <!-- Call Lambda Button -->
+  <button id="testBtn">Call Lambda</button>
+  <p id="output"></p>
+
+  <hr>
+
+  <!-- Create User Section -->
+  <h2>Create Cognito User</h2>
+
+  <label>Email:</label><br>
+  <input id="emailInput" type="text" placeholder="Enter email"><br><br>
+
+  <label>Role:</label><br>
+  <select id="roleSelect">
+    <option value="Teachers">Teachers</option>
+    <option value="Students">Students</option>
+  </select><br><br>
+
+  <button id="createUserBtn">Create User</button>
+
+  <p id="createUserOutput"></p>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    /* ---------------------------
+       CALL TEST LAMBDA
+    --------------------------- */
+    document.getElementById("testBtn").addEventListener("click", async () => {
+      const message = await ipcRenderer.invoke("callLambda");
+      document.getElementById("output").innerText = message;
+    });
+
+    /* ---------------------------
+       CALL CREATE USER LAMBDA
+    --------------------------- */
+    document.getElementById("createUserBtn").addEventListener("click", async () => {
+      const email = document.getElementById("emailInput").value;
+      const role = document.getElementById("roleSelect").value;
+
+      const response = await ipcRenderer.invoke("createUser", {
+        email,
+        role
+      });
+
+      document.getElementById("createUserOutput").innerText =
+        JSON.stringify(response, null, 2);
+    });
+  </script>
+
+</body>
+</html>
