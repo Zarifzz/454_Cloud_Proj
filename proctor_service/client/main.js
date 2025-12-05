@@ -2,22 +2,37 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
-// Load backend.js (your API calls)
+
 const backend = require("./backend.js");
 
 let win;
+let isProctorMode = false;
 
 function createWindow() {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,        // allows require(), ipcRenderer
+      nodeIntegration: true,       
       contextIsolation: false
-    }
+    }, 
+
+    fullscreen: false,
+    kiosk: false 
+
   });
 
   win.loadFile("pages/index.html");
+  
+  win.on("close", (e) => {
+    if (isProctorMode) e.preventDefault();
+  });
+
+  win.on("minimize", (e) => {
+    if (isProctorMode) e.preventDefault();
+  });
+
+
 }
 
 app.whenReady().then(createWindow);
@@ -50,6 +65,27 @@ ipcMain.on("navigate-submit-test", (event, testId) => {
   });
 });
 
+ipcMain.on("enter-proctor-mode", () => {
+  if (!win) return;
+
+  isProctorMode = true;
+
+  win.setFullScreen(true);
+  win.setKiosk(true);
+
+  // Disable shortcuts like Alt+Tab, Cmd+Tab (Windows/Linux only)
+  win.setAlwaysOnTop(true, "screen-saver");
+});
+
+ipcMain.on("exit-proctor-mode", () => {
+  if (!win) return;
+
+  isProctorMode = false;
+
+  win.setKiosk(false);
+  win.setFullScreen(false);
+  win.setAlwaysOnTop(false);
+});
 
 
 /* ------------------------------------------

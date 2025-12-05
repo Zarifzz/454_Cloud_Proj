@@ -3,6 +3,12 @@ const { ipcRenderer } = require("electron");
 let currentTestId = null;
 let testData = null;
 
+
+window.addEventListener("DOMContentLoaded", () => {
+  ipcRenderer.send("enter-proctor-mode");
+});
+
+
 /* -------------------------
    RECEIVE testId ON LOAD
 -------------------------- */
@@ -10,10 +16,13 @@ ipcRenderer.on("load-test", async (event, testId) => {
   await loadTest(testId);
 });
 
+
+
 /* -------------------------
    BACK NAVIGATION
 -------------------------- */
 document.getElementById("backBtn").addEventListener("click", () => {
+  ipcRenderer.send("exit-proctor-mode");
   ipcRenderer.send("navigate-student");
 });
 
