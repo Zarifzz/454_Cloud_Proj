@@ -11,6 +11,6 @@ document.getElementById("createUserBtn").addEventListener("click", async () => {
     JSON.stringify(result, null, 2);
 });
 
-document.getElementById("backHome").addEventListener("click", () => {
+document.getElementById("backBtn").addEventListener("click", () => {
   ipcRenderer.send("navigate-index");
 });

@@ -72,8 +72,6 @@ ipcMain.on("enter-proctor-mode", () => {
 
   win.setFullScreen(true);
   win.setKiosk(true);
-
-  // Disable shortcuts like Alt+Tab, Cmd+Tab (Windows/Linux only)
   win.setAlwaysOnTop(true, "screen-saver");
 });
 
