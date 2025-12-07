@@ -93,8 +93,8 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
       answers
     });
 
-    document.getElementById("submitOutput").innerText =
-      JSON.stringify(response, null, 2);
+    document.getElementById("submitOutput").innerText = response.message;
+    
   } catch (err) {
     console.error("submitTest error:", err);
     document.getElementById("submitOutput").innerText = err.message;
