@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+
+<body>
+  <h1>Teacher Dashboard</h1>
+
+  <button id="backBtn">Back to Home</button>
+
+  <!-- Upload Test -->
+  <section>
+    <h2>Upload Test</h2>
+
+    <label>Test ID:</label>
+    <input id="testIdInput" type="text" placeholder="Enter test ID">
+
+    <label>test.json:</label>
+    <input id="testJsonFile" type="file" accept="application/json">
+
+    <label>answers.json:</label>
+    <input id="answersJsonFile" type="file" accept="application/json">
+
+    <button id="uploadTestBtn">Upload Test</button>
+    <pre id="uploadOutput"></pre>
+  </section>
+
+  <hr>
+
+  <!-- Publish Test -->
+  <section>
+    <h2>Publish Test</h2>
+
+    <label>Test ID:</label>
+    <input id="publishTestId" type="text" placeholder="Enter test ID">
+
+    <label>Duration (minutes):</label>
+    <input id="publishDuration" type="number" placeholder="30">
+
+    <label>Available From:</label>
+    <input id="publishFrom" type="datetime-local">
+
+    <label>Available To:</label>
+    <input id="publishTo" type="datetime-local">
+
+    <button id="publishTestBtn">Publish</button>
+    <pre id="publishOutput"></pre>
+  </section>
+
+  <hr>
+
+
+  <!-- List Tests -->
+  <section>
+    <h2>List Tests</h2>
+
+    <button id="listTestsBtn">Load Tests</button>
+    <pre id="testsOutput"></pre>
+  </section>
+
+  <hr>
+
+  <!-- Submissions -->
+  <section>
+    <h2>View Submissions for Test</h2>
+
+    <label>Test ID:</label>
+    <input id="submissionsTestId" type="text">
+
+    <button id="viewSubsBtn">View Submissions</button>
+    <pre id="subsOutput"></pre>
+  </section>
+
+  <script src="teacher.js"></script>
+</body>
+</html>

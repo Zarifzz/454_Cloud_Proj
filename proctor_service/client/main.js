@@ -1,75 +1,110 @@
+// main.js
 const { app, BrowserWindow, ipcMain } = require("electron");
-const axios = require("axios");
-const config = require('./client_config.json');
+const path = require("path");
 
 
-const API_URL_test = config.API_URLS.test; // replace with yours
+const backend = require("./backend.js");
+
+let win;
+let isProctorMode = false;
 
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 600,
-    height: 400,
-    webPreferences: { nodeIntegration: true, contextIsolation: false },
+  win = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: true,       
+      contextIsolation: false
+    }, 
+
+    fullscreen: false,
+    kiosk: false 
+
   });
 
-  win.loadFile("index.html");
+  win.loadFile("pages/index.html");
+  
+  win.on("close", (e) => {
+    if (isProctorMode) e.preventDefault();
+  });
+
+  win.on("minimize", (e) => {
+    if (isProctorMode) e.preventDefault();
+  });
+
+
 }
 
-/* -------------------------------
-   CALL TEST LAMBDA 
----------------------------------*/
-ipcMain.handle("callLambda", async () => {
-  try {
-    // Replace with the JWT you got from Cognito login
-    const jwtToken = config.CURR_TOKEN;
-    const response = await axios.get(API_URL_test, {
-      headers: {
-        Authorization: jwtToken
-      }
-    });
-
-    //TODO: see what the response.data looks like when you get to here 
-    return response.data.message; // or just response.data if you want full response
-
-
-  } catch (error) {
-    console.log(error);
-    console.error(error.response ? error.response.data : error);
-    return "Error contacting API";
-  }
-});
-
-
-/* -------------------------------
-   CALL ADMIN-CREATE LAMBDA (NEW)
-   This sends: email, role
----------------------------------*/
-
-const API_URL_AssignRole = config.API_URLS.AssignRole;
-
-ipcMain.handle("createUser", async (event, userData) => {
-  try {
-    const jwtToken = config.CURR_TOKEN;
-
-    const response = await axios.post(
-      API_URL_AssignRole,
-      {
-        email: userData.email,
-        role: userData.role
-      },
-      {
-        headers: { Authorization: jwtToken }
-      }
-    );
-
-    return response.data.message;
-
-  } catch (error) {
-    console.error(error.response ? error.response.data : error);
-    return { error: "Error creating user" };
-  }
-});
-
-
-
 app.whenReady().then(createWindow);
+
+/* ------------------------------------------
+   NAVIGATION EVENTS
+------------------------------------------- */
+ipcMain.on("navigate-admin", () => {
+  win.loadFile("pages/admin/admin.html");
+});
+
+ipcMain.on("navigate-index", () => {
+  win.loadFile("pages/index.html");
+});
+
+ipcMain.on("navigate-teacher", () => {
+  win.loadFile("pages/teacher/teacher.html");
+});
+
+ipcMain.on("navigate-student", () => {
+  win.loadFile("pages/student/student.html");
+});
+
+ipcMain.on("navigate-submit-test", (event, testId) => {
+  win.loadFile("pages/student/submit-test.html");
+
+  // Send testId to the newly loaded page
+  win.webContents.once("did-finish-load", () => {
+    win.webContents.send("load-test", testId);
+  });
+});
+
+ipcMain.on("enter-proctor-mode", () => {
+  if (!win) return;
+
+  isProctorMode = true;
+
+  win.setFullScreen(true);
+  win.setKiosk(true);
+  win.setAlwaysOnTop(true, "screen-saver");
+});
+
+ipcMain.on("exit-proctor-mode", () => {
+  if (!win) return;
+
+  isProctorMode = false;
+
+  win.setKiosk(false);
+  win.setFullScreen(false);
+  win.setAlwaysOnTop(false);
+});
+
+
+/* ------------------------------------------
+   CONNECT FRONTEND → backend.js
+------------------------------------------- */
+//Admin
+ipcMain.handle("createUser", backend.createUser);
+
+// Teachers
+ipcMain.handle("uploadTest", backend.uploadTest);
+ipcMain.handle("publishTest", backend.publishTest);
+ipcMain.handle("listTests", backend.listTests);
+ipcMain.handle("getSubmissionsForTest", backend.getSubmissionsForTest);
+
+//Students
+ipcMain.handle("listAvailableTests", backend.listAvailableTests);
+ipcMain.handle("takeTest", backend.takeTest);
+ipcMain.handle("getSubmissionStatus", backend.getSubmissionStatus);
+ipcMain.handle("submitTest", backend.submitTest);
+
+
+
+
+

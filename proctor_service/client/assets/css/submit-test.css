@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1, h2 {
+  margin-bottom: 10px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+#submitOutput {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
+
+button {
+  padding: 8px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+}
