@@ -7,9 +7,21 @@ document.getElementById("createUserBtn").addEventListener("click", async () => {
 
   const result = await ipcRenderer.invoke("createUser", { email, role });
 
-  document.getElementById("createUserOutput").innerText =
-    JSON.stringify(result, null, 2);
+  const output = document.getElementById("createUserOutput");
+
+  if (result.error) {
+    output.innerText = `Error: ${result.error}`;
+  } 
+  else {
+    output.innerText = 
+      `${result.message}\n` +
+      `Email: ${result.email}\n` +
+      `Role: ${result.role}`;
+  }
+
 });
+
+
 
 document.getElementById("backBtn").addEventListener("click", () => {
   ipcRenderer.send("navigate-index");

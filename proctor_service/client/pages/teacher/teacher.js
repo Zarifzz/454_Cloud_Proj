@@ -28,32 +28,45 @@ async function loadJSON(input) {
    Upload Test
 -------------------------- */
 document.getElementById("uploadTestBtn").addEventListener("click", async () => {
+  const output = document.getElementById("uploadOutput");
   const testId = document.getElementById("testIdInput").value;
   const testJson = await loadJSON(document.getElementById("testJsonFile"));
   const answersJson = await loadJSON(document.getElementById("answersJsonFile"));
 
-  const response = await ipcRenderer.invoke("uploadTest", {
-    testId,
-    testJson,
-    answersJson,
+  try {
+    const response = await ipcRenderer.invoke("uploadTest", {
+      testId,
+      testJson,
+      answersJson,
+    });
 
-  });
+    if (response.error) {
+      output.innerText = `Error: ${response.error}`;
+    } else {
+      output.innerHTML = `
+        ${response.message} <br>
+        <strong>Test ID:</strong> ${response.testId}
+      `;
+    }
+  } catch (err) {
+    
+    output.innerText = `Exception: ${err.message}`;
+  }
 
-  document.getElementById("uploadOutput").innerText =
-    JSON.stringify(response, null, 2);
 });
+
+
 
 /* -------------------------
    Publish Test
 -------------------------- */
 document.getElementById("publishTestBtn").addEventListener("click", async () => {
+  const output = document.getElementById("publishOutput");
   const testId = document.getElementById("publishTestId").value;
   const durationMinutes = Number(document.getElementById("publishDuration").value);
 
   const availableFrom = new Date(document.getElementById("publishFrom").value).toISOString();
   const availableTo = new Date(document.getElementById("publishTo").value).toISOString();
-
-  console.log(availableFrom, availableTo);
 
   const metadata = {
     published: true,
@@ -62,14 +75,30 @@ document.getElementById("publishTestBtn").addEventListener("click", async () => 
     availableTo
   };
 
-  const response = await ipcRenderer.invoke("publishTest", { testId, metadata });
+  try {
+    const response = await ipcRenderer.invoke("publishTest", {
+      testId, metadata 
+    });
 
-  document.getElementById("publishOutput").innerText =
-    JSON.stringify(response, null, 2);
+    if (response.error) {
+      output.innerText = `Error: ${response.error}`;
+    } else {
+      output.innerHTML = `
+        ${response.message} <br>
+        <strong>Test ID:</strong> ${response.testId} <br>
+      `;
+    }
+  } catch (err) {
+    console.error("[publishTest] ERROR:", err);
+    output.innerText = `Exception: ${err.message}`;
+  }
+
 });
 
 
+
 //Refresh listing tests
+
 document.getElementById("refreshTestsBtn").addEventListener("click", () => {
   loadTests();
 });
@@ -94,7 +123,7 @@ async function loadTests() {
   container.innerHTML = "<p>Loading tests...</p>";
 
   try {
-    
+
     const response = await ipcRenderer.invoke("listTests");
 
     if (!response) throw new Error("IPC returned null/undefined");
@@ -129,18 +158,33 @@ async function loadTests() {
       const published = metadata?.published === true ? "Yes" : "No";
 
       const card = document.createElement("div");
-      card.className = "test-card";
+      card.className = "border rounded-lg p-4 bg-gray-50 shadow-sm";
 
+      // Build card
       card.innerHTML = `
-        <h3>${title}</h3>
+        <!-- Title -->
+        <h3 class="text-lg font-semibold">${title}</h3>
 
-        <p><strong>Test ID:</strong> ${testId}</p>
-        <p><strong>Description:</strong> ${description}</p>
+        <!-- Description -->
+        <p class="text-gray-700 mt-1 mb-3">${description}</p>
 
-        <p><strong>Published:</strong> ${published}</p>
-        <p><strong>Duration:</strong> ${duration} minutes</p>
-        <p><strong>Available From:</strong> ${availableFrom}</p>
-        <p><strong>Available To:</strong> ${availableTo}</p>
+        <!-- Two-column layout -->
+        <div class="grid grid-cols-2 gap-4">
+
+          <!-- LEFT COLUMN -->
+          <div class="space-y-1">
+            <p><strong>Test ID:</strong> ${testId}</p>
+            <p><strong>Published:</strong> ${published}</p>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="space-y-1">
+            <p><strong>Duration:</strong> ${duration} minutes</p>
+            <p><strong>Available From:</strong> ${availableFrom}</p>
+            <p><strong>Available To:</strong> ${availableTo}</p>
+          </div>
+
+        </div>
       `;
 
       container.appendChild(card);
