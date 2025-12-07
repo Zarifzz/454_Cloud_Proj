@@ -23,6 +23,9 @@ function createWindow() {
   });
 
   win.loadFile("pages/index.html");
+
+  //dev tools
+  win.webContents.openDevTools();
   
   win.on("close", (e) => {
     if (isProctorMode) e.preventDefault();
