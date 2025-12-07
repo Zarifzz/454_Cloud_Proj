@@ -105,16 +105,80 @@ document.getElementById("refreshTestsBtn").addEventListener("click", () => {
 
 
 /* -------------------------
-   Submissions for Test
+   Submissions for Test 
 -------------------------- */
 document.getElementById("viewSubsBtn").addEventListener("click", async () => {
   const testId = document.getElementById("submissionsTestId").value;
+  const output = document.getElementById("subsOutput");
+
+  output.innerHTML = `<p>Loading...</p>`;
 
   const result = await ipcRenderer.invoke("getSubmissionsForTest", { testId });
 
-  document.getElementById("subsOutput").innerText =
-    JSON.stringify(result, null, 2);
+  if (!result || result.error) {
+    output.innerHTML = `<p class="text-red-600">Error loading submissions.</p>`;
+    return;
+  }
+
+  const { submissions } = result;
+
+  if (!submissions || submissions.length === 0) {
+    output.innerHTML = `
+      <div class="p-4 bg-gray-50 border rounded-lg text-gray-700">
+        No submissions found for this test.
+      </div>
+    `;
+    return;
+  }
+
+  // Build UI
+  let html = `
+    <div class="bg-white shadow rounded-xl p-4 space-y-4 border">
+
+      <!-- Test ID -->
+      <h3 class="text-lg font-semibold">Submissions for Test: 
+        <span class="text-blue-600">${result.testId}</span>
+      </h3>
+
+      <p class="text-gray-700">
+        <strong>Total Submissions:</strong> ${result.count}
+      </p>
+
+      <div class="space-y-3">
+  `;
+
+  // For each submission
+  submissions.forEach((sub, index) => {
+    const answersHtml = Object.entries(sub.answers)
+      .map(([q, a]) => `<li><strong>${q}:</strong> ${a}</li>`)
+      .join("");
+
+    html += `
+      <details class="border rounded-lg p-3 bg-gray-50">
+        <summary class="cursor-pointer font-medium text-blue-700">
+          Student ID: ${sub.studentId}
+        </summary>
+
+        <div class="mt-3 space-y-2 ml-3">
+          <p><strong>Submitted At:</strong> ${new Date(sub.submittedAt).toLocaleString()}</p>
+
+          <p><strong>Answers:</strong></p>
+          <ul class="list-disc ml-6 text-gray-800">
+            ${answersHtml}
+          </ul>
+        </div>
+      </details>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  output.innerHTML = html;
 });
+
 
 
 //Load Tests and inject DOM
