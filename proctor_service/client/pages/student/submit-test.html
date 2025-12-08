@@ -9,16 +9,17 @@
 
   <link rel="stylesheet" href="../../asets/css/submit-test.css" />
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
+<body class="bg-gray-100 min-h-screen p-6 relative">
 
   <!-- Header -->
   <div class="flex items-center justify-between mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Take Test</h1>
+    <!-- Back button removed -->
+  </div>
 
-    <button id="backBtn"
-      class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow">
-      Back
-    </button>
+  <!-- Timer -->
+  <div id="timerDisplay" class="absolute top-6 right-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded shadow text-lg font-semibold">
+    Timer: 00:00
   </div>
 
   <!-- Main Card -->
@@ -28,6 +29,8 @@
     <h2 id="testTitle" class="text-2xl font-semibold mb-4 text-gray-900">
       Loading test...
     </h2>
+
+    <div id="errorBox" class="hidden bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-4"></div>
 
     <hr class="my-4">
 
@@ -44,7 +47,6 @@
       </button>
 
       <div id="submitOutput" class="mt-4 bg-gray-100 text-sm p-3 rounded-lg whitespace-pre-wrap"></div>
-
     </section>
 
   </div>

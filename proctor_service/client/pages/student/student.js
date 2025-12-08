@@ -21,17 +21,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 /* -------------------------
-   Take Test
--------------------------- */
-document.getElementById("takeTestBtn").addEventListener("click", async () => {
-  const testId = document.getElementById("takeTestId").value;
-
-  const response = await ipcRenderer.invoke("takeTest", { testId });
-  document.getElementById("takeTestOutput").innerText =
-    JSON.stringify(response, null, 2);
-});
-
-/* -------------------------
    Take Test - Part for seperate Taketest View
 -------------------------- */
 
