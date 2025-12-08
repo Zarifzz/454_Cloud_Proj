@@ -62,11 +62,13 @@ ipcMain.on("navigate-student", () => {
 ipcMain.on("navigate-submit-test", (event, testId) => {
   win.loadFile("pages/student/submit-test.html");
 
-  // Send testId to the newly loaded page
+
   win.webContents.once("did-finish-load", () => {
     win.webContents.send("load-test", testId);
   });
 });
+
+//PROCTOR MODE
 
 ipcMain.on("enter-proctor-mode", () => {
   if (!win) return;
