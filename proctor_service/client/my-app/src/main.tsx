@@ -1,19 +1,32 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'next-themes'
+import { createRoot } from 'react-dom/client'
 import App from './App'
-import './index.css'
-import './styles/globals.css'
 import './styles/globals.css';
 
+declare global {
+  interface Window {
+    electron?: {
+      ipcRenderer: {
+        send: (channel: string, ...args: any[]) => void;
+        invoke: (channel: string, ...args: any[]) => Promise<any>;
+        on: (channel: string, listener: (event: unknown, ...args: any[]) => void) => void;
+        removeAllListeners: (channel: string) => void;
+      };
+    };
+  }
+}
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+if (window.electron?.ipcRenderer) {
+  window.electron.ipcRenderer.on('navigate', (_event, path: string) => {
+    if (typeof path === 'string') {
+      window.history.pushState({}, '', path)
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
+  })
+}
+
+createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system">
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <App />
   </React.StrictMode>,
 )

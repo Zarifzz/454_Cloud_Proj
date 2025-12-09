@@ -18,6 +18,7 @@ node_modules/
 # Build outputs
 dist/
 build/
+proctor_service/client/my-app/dist-electron/
 
 
 # Config
