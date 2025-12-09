@@ -1,78 +1,125 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Teacher Dashboard</title>
-  <link rel="stylesheet" href="../assets/styles.css">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional small overrides -->
+  <link rel="stylesheet" href="../../assets/css/teacher.css">
 </head>
 
-<body>
-  <h1>Teacher Dashboard</h1>
+<body class="bg-gray-50 text-gray-900 p-6 font-sans">
 
-  <button id="backBtn">Back to Home</button>
+  <div class="max-w-4xl mx-auto space-y-8">
 
-  <!-- Upload Test -->
-  <section>
-    <h2>Upload Test</h2>
+    <h1 class="text-3xl font-bold text-center">Teacher Dashboard</h1>
 
-    <label>Test ID:</label>
-    <input id="testIdInput" type="text" placeholder="Enter test ID">
+    <button id="backBtn"
+      class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
+      Back to Home
+    </button>
 
-    <label>test.json:</label>
-    <input id="testJsonFile" type="file" accept="application/json">
+    <!-- UPLOAD TESTS-->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h2 class="text-xl font-semibold mb-4">Upload Test</h2>
 
-    <label>answers.json:</label>
-    <input id="answersJsonFile" type="file" accept="application/json">
+      <label class="block font-medium mb-1">Test ID</label>
+      <input id="testIdInput" type="text" placeholder="Enter test ID"
+        class="w-full border rounded-lg p-2 mb-3 bg-gray-100">
 
-    <button id="uploadTestBtn">Upload Test</button>
-    <pre id="uploadOutput"></pre>
-  </section>
+      <label class="block font-medium mb-1">test.json</label>
+      <input id="testJsonFile" type="file" accept="application/json"
+        class="w-full mb-3">
 
-  <hr>
+      <label class="block font-medium mb-1">answers.json</label>
+      <input id="answersJsonFile" type="file" accept="application/json"
+        class="w-full mb-4">
 
-  <!-- Publish Test -->
-  <section>
-    <h2>Publish Test</h2>
+      <button id="uploadTestBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
+        Upload Test
+      </button>
 
-    <label>Test ID:</label>
-    <input id="publishTestId" type="text" placeholder="Enter test ID">
-
-    <label>Duration (minutes):</label>
-    <input id="publishDuration" type="number" placeholder="30">
-
-    <label>Available From:</label>
-    <input id="publishFrom" type="datetime-local">
-
-    <label>Available To:</label>
-    <input id="publishTo" type="datetime-local">
-
-    <button id="publishTestBtn">Publish</button>
-    <pre id="publishOutput"></pre>
-  </section>
-
-  <hr>
+      <div id="uploadOutput" class="mt-3 text-sm text-gray-700"></div>
+    </section>
 
 
-  <!-- List Tests -->
-  <section>
-    <h2>List Tests</h2>
 
-    <button id="listTestsBtn">Load Tests</button>
-    <pre id="testsOutput"></pre>
-  </section>
+    <!-- LIST TESTS-->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h2 class="text-xl font-semibold mb-4">Available Tests</h2>
 
-  <hr>
+      <button id="refreshTestsBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow mb-3">
+        Refresh Tests
+      </button>
 
-  <!-- Submissions -->
-  <section>
-    <h2>View Submissions for Test</h2>
+      <div id="testsContainer" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+    </section>
 
-    <label>Test ID:</label>
-    <input id="submissionsTestId" type="text">
 
-    <button id="viewSubsBtn">View Submissions</button>
-    <pre id="subsOutput"></pre>
-  </section>
+
+    <!-- PUBLISH TESTS -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h2 class="text-xl font-semibold mb-4">Publish Test</h2>
+
+      <!-- Two-column layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- LEFT COLUMN -->
+        <div>
+          <label class="block font-medium mb-1">Test ID</label>
+          <input id="publishTestId" type="text"
+            class="w-full border rounded-lg p-2 mb-4 bg-gray-100">
+
+          <label class="block font-medium mb-1">Duration (minutes)</label>
+          <input id="publishDuration" type="number" placeholder="30"
+            class="w-full border rounded-lg p-2 bg-gray-100">
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+          <label class="block font-medium mb-1">Available From</label>
+          <input id="publishFrom" type="datetime-local"
+            class="w-full border rounded-lg p-2 mb-4 bg-gray-100">
+
+          <label class="block font-medium mb-1">Available To</label>
+          <input id="publishTo" type="datetime-local"
+            class="w-full border rounded-lg p-2 bg-gray-100">
+        </div>
+
+      </div>
+
+      <!-- Publish Button -->
+      <button id="publishTestBtn"
+        class="mt-6 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
+        Publish
+      </button>
+
+      <div id="publishOutput" class="mt-3 text-sm text-gray-700"></div>
+    </section>
+
+
+
+    <!-- SHOW SUBMISSIONS -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h2 class="text-xl font-semibold mb-4">View Submissions</h2>
+
+      <label class="block font-medium mb-1">Test ID</label>
+      <input id="submissionsTestId" type="text"
+        class="w-full border rounded-lg p-2 mb-3 bg-gray-100">
+
+      <button id="viewSubsBtn"
+        class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
+        View Submissions
+      </button>
+
+      <div id="subsOutput" class="mt-3 text-sm"></div>
+
+    </section>
+
+  </div>
 
   <script src="teacher.js"></script>
 </body>

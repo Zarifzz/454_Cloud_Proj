@@ -1,0 +1,16 @@
+
+
+/* Make tests container scrollable and clean */
+#availableTestsContainer {
+  max-height: 26rem;
+  overflow-y: auto;
+}
+
+/* Optional nicer scrollbar */
+#availableTestsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+#availableTestsContainer::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 6px;
+}

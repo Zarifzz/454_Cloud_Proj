@@ -1,0 +1,20 @@
+/* admin.css */
+body, input, select, button {
+  font-family: Arial, sans-serif;
+}
+
+
+/* Make tests container scrollable and clean */
+#testsContainer {
+  max-height: 26rem;
+  overflow-y: auto;
+}
+
+/* Optional nicer scrollbar */
+#testsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+#testsContainer::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 6px;
+}

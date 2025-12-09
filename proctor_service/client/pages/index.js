@@ -6,6 +6,7 @@ document.getElementById("goAdmin").addEventListener("click", () => {
 });
 
 document.getElementById("goTeacher").addEventListener("click", () => {
+
   ipcRenderer.send("navigate-teacher");
 });
 
