@@ -2,30 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Take Test</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="stylesheet" href="../../asets/css/submit-test.css" />
 </head>
 <body class="bg-gray-100 min-h-screen p-6 relative">
 
-  <!-- Header -->
+
   <div class="flex items-center justify-between mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Take Test</h1>
     
   </div>
 
-  <!-- Timer -->
-  <div id="timerDisplay" class="absolute top-6 right-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded shadow text-lg font-semibold">
+
+  <div id="timerDisplay" 
+  class="absolute top-6 right-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded shadow text-lg font-semibold">
     Timer: 00:00
   </div>
 
-  <!-- Main Card -->
+
   <div class="bg-white shadow-xl rounded-xl p-6 max-w-3xl mx-auto">
 
-    <!-- Test Title -->
+ 
     <h2 id="testTitle" class="text-2xl font-semibold mb-4 text-gray-900">
       Loading test...
     </h2>
@@ -34,24 +33,25 @@
 
     <hr class="my-4">
 
-    <!-- Test Questions -->
     <section>
       <form id="testForm" class="space-y-6"></form>
     </section>
 
-    <!-- Submit Button -->
+
     <section class="mt-6">
+
       <button id="submitBtn"
         class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg shadow">
         Submit Test
       </button>
 
+
       <div id="submitOutput" class="mt-4 bg-gray-100 text-sm p-3 rounded-lg whitespace-pre-wrap"></div>
+
     </section>
 
   </div>
 
-  <!-- JS -->
   <script src="submit-test.js"></script>
 
 </body>

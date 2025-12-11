@@ -2,14 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Teacher Dashboard</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Optional small overrides -->
   <link rel="stylesheet" href="../../assets/css/teacher.css">
 </head>
+
 
 <body class="bg-gray-50 text-gray-900 p-6 font-sans">
 
@@ -22,21 +20,26 @@
       Back to Home
     </button>
 
-    <!-- UPLOAD TESTS-->
+
+  
     <section class="bg-white shadow rounded-xl p-6">
+
       <h2 class="text-xl font-semibold mb-4">Upload Test</h2>
 
       <label class="block font-medium mb-1">Test ID</label>
       <input id="testIdInput" type="text" placeholder="Enter test ID"
         class="w-full border rounded-lg p-2 mb-3 bg-gray-100">
 
+
       <label class="block font-medium mb-1">test.json</label>
       <input id="testJsonFile" type="file" accept="application/json"
         class="w-full mb-3">
 
+
       <label class="block font-medium mb-1">answers.json</label>
       <input id="answersJsonFile" type="file" accept="application/json"
         class="w-full mb-4">
+
 
       <button id="uploadTestBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
         Upload Test
@@ -47,7 +50,7 @@
 
 
 
-    <!-- LIST TESTS-->
+
     <section class="bg-white shadow rounded-xl p-6">
       <h2 class="text-xl font-semibold mb-4">Available Tests</h2>
 
@@ -60,14 +63,13 @@
 
 
 
-    <!-- PUBLISH TESTS -->
+  
     <section class="bg-white shadow rounded-xl p-6">
       <h2 class="text-xl font-semibold mb-4">Publish Test</h2>
 
-      <!-- Two-column layout -->
+  
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <!-- LEFT COLUMN -->
         <div>
           <label class="block font-medium mb-1">Test ID</label>
           <input id="publishTestId" type="text"
@@ -78,7 +80,7 @@
             class="w-full border rounded-lg p-2 bg-gray-100">
         </div>
 
-        <!-- RIGHT COLUMN -->
+
         <div>
           <label class="block font-medium mb-1">Available From</label>
           <input id="publishFrom" type="datetime-local"
@@ -91,7 +93,8 @@
 
       </div>
 
-      <!-- Publish Button -->
+
+
       <button id="publishTestBtn"
         class="mt-6 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow">
         Publish
@@ -102,7 +105,7 @@
 
 
 
-    <!-- SHOW SUBMISSIONS -->
+
     <section class="bg-white shadow rounded-xl p-6">
       <h2 class="text-xl font-semibold mb-4">View Submissions</h2>
 
@@ -121,6 +124,9 @@
 
   </div>
 
+
+
   <script src="teacher.js"></script>
+  
 </body>
 </html>
