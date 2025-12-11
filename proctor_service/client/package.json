@@ -34,7 +34,10 @@
     "axios": "^1.12.2",
 
 
-    "electron": "^38.3.0"
+    "electron": "^38.3.0",
+
+
+    "jsonwebtoken": "^9.0.3"
 
 
   }

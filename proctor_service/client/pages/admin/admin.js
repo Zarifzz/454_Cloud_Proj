@@ -1,4 +1,4 @@
-// pages/admin/admin.js
+
 const { ipcRenderer } = require("electron");
 
 document.getElementById("createUserBtn").addEventListener("click", async () => {

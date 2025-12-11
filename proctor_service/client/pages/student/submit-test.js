@@ -9,6 +9,20 @@ window.addEventListener("DOMContentLoaded", () => {
   ipcRenderer.send("enter-proctor-mode");
 });
 
+window.addEventListener("keydown", (event) => {
+  if (event.key === "F11") {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  }
+});
+
+
+ipcRenderer.on("focusLostSig", () => {
+  alert("Left exam window, this will be reported");
+});
+
+
 /* -------------------------
    RECEIVE testId ON LOAD
 -------------------------- */
@@ -131,7 +145,7 @@ function exitAfterSubmit() {
    TIMER FUNCTIONS
 -------------------------- */
 function startTimer(seconds) {
-  stopTimer(); // clear any existing timer
+  stopTimer(); 
   timeLeft = seconds;
 
   const timerDisplay = document.getElementById("timerDisplay");

@@ -135,7 +135,6 @@ document.getElementById("viewSubsBtn").addEventListener("click", async () => {
   let html = `
     <div class="bg-white shadow rounded-xl p-4 space-y-4 border">
 
-      <!-- Test ID -->
       <h3 class="text-lg font-semibold">Submissions for Test: 
         <span class="text-blue-600">${result.testId}</span>
       </h3>

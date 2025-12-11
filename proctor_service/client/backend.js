@@ -1,19 +1,38 @@
 const axios = require("axios");
 const config = require("./client_config.json");
 
+const fs = require("fs");
+const path = require("path");
+
+
+
+function loadConfig() {
+  const configPath = path.join(__dirname, "client_config.json");
+  return JSON.parse(fs.readFileSync(configPath, "utf8"));
+}
+
+
+//Calls Lambdas
+
 module.exports = {
+
   createUser: async (event, { email, role }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
       const response = await axios.post(
-        config.API_URLS.AssignRole,
+        API_URLS.AssignRole,
         { email, role },
-        { headers: { Authorization: jwt } }
+        { headers: { Authorization: CURR_TOKEN } }
       );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to create user" };
+
     }
   },
 
@@ -22,61 +41,77 @@ module.exports = {
 
   uploadTest: async (event, payload) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
       const response = await axios.post(
-        config.API_URLS.UploadTest,
+        API_URLS.UploadTest,
         payload,
-        { headers: { Authorization: jwt } }
+        { headers: { Authorization: CURR_TOKEN } }
       );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to upload test" };
     }
+
   },
 
   publishTest: async (event, { testId, metadata }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
 
       const response = await axios.post(
-        config.API_URLS.PublishTest,
-        { testId, metadata },   // ← send metadata
-        { headers: { Authorization: jwt } }
+        API_URLS.PublishTest,
+        { testId, metadata }, 
+        { headers: { Authorization: CURR_TOKEN } }
       );
 
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to publish test" };
     }
+
   },
 
 
   listTests: async () => {
     try {
-      const jwt = config.CURR_TOKEN;
-      const response = await axios.get(config.API_URLS.ListTest, {
-        headers: { Authorization: jwt }
-      });
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
+      const response = await axios.get(
+        API_URLS.ListTest,
+        {headers: { Authorization: CURR_TOKEN } }
+      );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to list tests" };
     }
+
   },
 
   getSubmissionsForTest: async (event, { testId }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
 
       const response = await axios.get(
-        config.API_URLS.GetSubmissionsForTest + `?testId=${testId}`,
-        { headers: { Authorization: jwt } }
+        API_URLS.GetSubmissionsForTest + `?testId=${testId}`,
+        { headers: { Authorization: CURR_TOKEN } }
       );
 
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to fetch submissions" };
     }
@@ -86,12 +121,17 @@ module.exports = {
 
     listAvailableTests: async () => {
     try {
-      const jwt = config.CURR_TOKEN;
-      const response = await axios.get(config.API_URLS.ListAvailableTest, {
-        headers: { Authorization: jwt }
-      });
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
+      const response = await axios.get(
+        API_URLS.ListAvailableTest, {
+        headers: { Authorization: CURR_TOKEN } }
+      );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to list available tests" };
     }
@@ -99,16 +139,17 @@ module.exports = {
 
   takeTest: async (event, { testId }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
       const response = await axios.get(
-        config.API_URLS.TakeTest + `?testId=${testId}`,
-        {
-          headers: { Authorization: jwt }
-        }
+        API_URLS.TakeTest + `?testId=${testId}`,
+        {headers: { Authorization: CURR_TOKEN } }
       );
 
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to load test" };
     }
@@ -116,14 +157,18 @@ module.exports = {
 
   getSubmissionStatus: async (event, { testId }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
       const response = await axios.post(
-        config.API_URLS.GetSubmissionStatus,
+        API_URLS.GetSubmissionStatus,
         { testId },
-        { headers: { Authorization: jwt } }
+        { headers: { Authorization: CURR_TOKEN } }
       );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to check submission status" };
     }
@@ -131,14 +176,18 @@ module.exports = {
 
   submitTest: async (event, { testId, answers }) => {
     try {
-      const jwt = config.CURR_TOKEN;
+      const { CURR_TOKEN, API_URLS } = loadConfig();
+
       const response = await axios.post(
-        config.API_URLS.SubmitTest,
+        API_URLS.SubmitTest,
         { testId, answers },
-        { headers: { Authorization: jwt } }
+        { headers: { Authorization: CURR_TOKEN } }
       );
+
       return response.data;
+
     } catch (err) {
+
       console.error(err.response?.data || err);
       return { error: "Failed to submit test" };
     }
