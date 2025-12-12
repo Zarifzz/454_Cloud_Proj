@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
+import { Clock, AlertCircle  } from 'lucide-react';
 
 interface Question {
   id: string;
