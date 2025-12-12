@@ -1,12 +1,12 @@
 
 
-/* Make tests container scrollable and clean */
+
 #testsContainer {
   max-height: 26rem;
   overflow-y: auto;
 }
 
-/* Optional nicer scrollbar */
+
 #testsContainer::-webkit-scrollbar {
   width: 8px;
 }
